@@ -1,0 +1,118 @@
+const properties = [
+  {
+    id: 1,
+    title: "Station Road Commercial Property",
+    type: "Commercial",
+    location: "Station Road, Dewas",
+    price: "Contact for Price",
+    priceValue: 0,
+    area: "2,800 Sq. Ft.",
+    dimensions: "40 × 70 Feet",
+    frontage: "40 Feet",
+    bedrooms: "-",
+    bathrooms: "-",
+    parking: "Available",
+    featured: true,
+    description:
+      "Commercial property at a prime Station Road location suitable for showroom, office, bank, clinic or investment.",
+    image:
+      "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200&auto=format&fit=crop&q=85",
+  },
+  {
+    id: 2,
+    title: "Premium Residential Plot",
+    type: "Residential",
+    location: "Dewas",
+    price: "₹18 Lac",
+    priceValue: 1800000,
+    area: "1,200 Sq. Ft.",
+    dimensions: "Residential Plot",
+    frontage: "Good Road Front",
+    bedrooms: "-",
+    bathrooms: "-",
+    parking: "Available",
+    featured: true,
+    description:
+      "Residential plot suitable for building a comfortable family home in a developing area of Dewas.",
+    image:
+      "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1200&auto=format&fit=crop&q=85",
+  },
+  {
+    id: 3,
+    title: "Modern Row House",
+    type: "Row House",
+    location: "Dewas",
+    price: "Contact for Price",
+    priceValue: 0,
+    area: "10 × 50 Feet",
+    dimensions: "10 × 50 Feet",
+    frontage: "10 Feet",
+    bedrooms: "2",
+    bathrooms: "2",
+    parking: "Available",
+    featured: true,
+    description:
+      "Well-planned row house option designed for practical modern living and long-term family comfort.",
+    image:
+      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&auto=format&fit=crop&q=85",
+  },
+  {
+    id: 4,
+    title: "Spacious Family Row House",
+    type: "Row House",
+    location: "Dewas",
+    price: "Contact for Price",
+    priceValue: 0,
+    area: "13 × 40 Feet",
+    dimensions: "13 × 40 Feet",
+    frontage: "13 Feet",
+    bedrooms: "2",
+    bathrooms: "2",
+    parking: "Available",
+    featured: false,
+    description:
+      "A spacious row house configuration suitable for families seeking a balanced layout and comfortable living.",
+    image:
+      "https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?w=1200&auto=format&fit=crop&q=85",
+  },
+  {
+    id: 5,
+    title: "Premium Family House",
+    type: "Row House",
+    location: "Dewas",
+    price: "Contact for Price",
+    priceValue: 0,
+    area: "15 × 50 Feet",
+    dimensions: "15 × 50 Feet",
+    frontage: "15 Feet",
+    bedrooms: "3",
+    bathrooms: "3",
+    parking: "Available",
+    featured: false,
+    description:
+      "Premium family house option with additional space, comfortable rooms and convenient vehicle parking.",
+    image:
+      "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1200&auto=format&fit=crop&q=85",
+  },
+  {
+    id: 6,
+    title: "Commercial Investment Opportunity",
+    type: "Commercial",
+    location: "AB Road, Dewas",
+    price: "Contact for Price",
+    priceValue: 0,
+    area: "Custom Requirement",
+    dimensions: "Prime Location",
+    frontage: "Main Road",
+    bedrooms: "-",
+    bathrooms: "-",
+    parking: "Available",
+    featured: false,
+    description:
+      "Commercial property opportunity suitable for businesses and investors looking for visibility and connectivity.",
+    image:
+      "https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=1200&auto=format&fit=crop&q=85",
+  },
+];
+
+export default properties;
