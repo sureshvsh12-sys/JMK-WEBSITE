@@ -99,8 +99,8 @@ export default function Navbar() {
               className={({ isActive }) =>
                 `relative inline-flex h-[104px] items-center whitespace-nowrap px-1 text-[15px] font-bold transition ${
                   isActive
-                    ? "text-slate-950"
-                    : "text-slate-600 hover:text-slate-950"
+                    ? "text-red-600 font-black"
+                    : "text-slate-700 hover:text-red-600"
                 }`
               }
             >
@@ -177,7 +177,7 @@ export default function Navbar() {
                 className={({ isActive }) =>
                   `rounded-2xl px-5 py-4 font-bold transition ${
                     isActive
-                      ? "bg-amber-400 text-slate-950"
+                      ? "bg-red-600 text-slate-950"
                       : "border border-slate-200 text-slate-700 hover:border-amber-400 hover:bg-amber-50"
                   }`
                 }
