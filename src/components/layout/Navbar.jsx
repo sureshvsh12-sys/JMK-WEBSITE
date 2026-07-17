@@ -10,30 +10,12 @@ import HeaderLogo from "../brand/HeaderLogo";
 import { JMK_LINKS } from "../../config/contact";
 
 const navigationItems = [
-  {
-    label: "Home",
-    path: "/",
-  },
-  {
-    label: "About Us",
-    path: "/about",
-  },
-  {
-    label: "JMK Assets",
-    path: "/assets",
-  },
-  {
-    label: "Financial Servicess",
-    path: "/financial",
-  },
-  {
-    label: "Solar Solutions",
-    path: "/solar",
-  },
-  {
-    label: "Contact",
-    path: "/contact",
-  },
+  { label: "Home", path: "/" },
+  { label: "About Us", path: "/about" },
+  { label: "JMK Assets", path: "/assets" },
+  { label: "Financial Servicess", path: "/financial" },
+  { label: "Solar Solutions", path: "/solar" },
+  { label: "Contact", path: "/contact" },
 ];
 
 export default function Navbar() {
@@ -57,9 +39,7 @@ export default function Navbar() {
   }, []);
 
   useEffect(() => {
-    document.body.style.overflow = mobileMenuOpen
-      ? "hidden"
-      : "";
+    document.body.style.overflow = mobileMenuOpen ? "hidden" : "";
 
     return () => {
       document.body.style.overflow = "";
@@ -72,10 +52,10 @@ export default function Navbar() {
 
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-50 border-b transition-all duration-300 ${
+      className={`fixed inset-x-0 top-0 z-50 border-b border-slate-200 bg-white transition-all duration-300 ${
         isScrolled
-          ? "border-slate-200 bg-white/95 shadow-xl shadow-slate-950/10 backdrop-blur-xl"
-          : "border-slate-200/80 bg-white shadow-sm"
+          ? "shadow-xl shadow-slate-950/10"
+          : "shadow-sm"
       }`}
     >
       <nav
@@ -97,10 +77,10 @@ export default function Navbar() {
               key={item.path}
               to={item.path}
               className={({ isActive }) =>
-                `relative inline-flex h-[104px] items-center whitespace-nowrap px-1 text-[15px] font-bold transition ${
+                `relative inline-flex h-[104px] items-center whitespace-nowrap px-1 text-[15px] font-black transition-colors duration-300 ${
                   isActive
-                    ? "text-red-600 font-black"
-                    : "text-slate-700 hover:text-red-600"
+                    ? "text-red-600"
+                    : "text-slate-800 hover:text-red-600"
                 }`
               }
             >
@@ -175,10 +155,10 @@ export default function Navbar() {
                 to={item.path}
                 onClick={closeMobileMenu}
                 className={({ isActive }) =>
-                  `rounded-2xl px-5 py-4 font-bold transition ${
+                  `rounded-2xl px-5 py-4 font-black transition ${
                     isActive
-                      ? "bg-red-600 text-slate-950"
-                      : "border border-slate-200 text-slate-700 hover:border-amber-400 hover:bg-amber-50"
+                      ? "bg-red-600 text-white"
+                      : "border border-slate-200 text-slate-800 hover:border-amber-400 hover:bg-amber-50 hover:text-red-600"
                   }`
                 }
               >
@@ -207,10 +187,6 @@ export default function Navbar() {
                 Call Now
               </a>
             </div>
-
-            <p className="mt-4 text-center text-sm leading-6 text-slate-500">
-              Property • Finance • Solar
-            </p>
           </div>
         </div>
       )}

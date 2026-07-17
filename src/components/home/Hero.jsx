@@ -71,29 +71,39 @@ export default function Hero() {
       <div className="hero-grid absolute inset-0 -z-10 opacity-70" />
 
       <div className="pointer-events-none absolute -left-48 top-28 h-[430px] w-[430px] rounded-full bg-amber-400/10 blur-[145px]" />
+
       <div className="pointer-events-none absolute -right-48 top-24 h-[460px] w-[460px] rounded-full bg-blue-500/10 blur-[160px]" />
 
       <div className="mx-auto max-w-[1500px] px-5 pb-8 pt-12 sm:px-6 lg:px-10 lg:pt-14 xl:px-12 xl:pt-16">
-        <div className="grid min-h-[680px] items-center gap-12 lg:grid-cols-[0.76fr_1.24fr] xl:gap-16">
-          <div className="relative z-10 mx-auto max-w-[610px] text-center lg:mx-0 lg:text-left">
+        <div className="grid min-h-[680px] items-center gap-12 lg:grid-cols-[0.78fr_1.22fr] xl:gap-14">
+          <div className="relative z-20 mx-auto max-w-[610px] text-center lg:mx-0 lg:text-left">
             <span className="reveal inline-flex items-center rounded-full border border-amber-400/60 bg-black/25 px-5 py-2.5 text-[11px] font-black uppercase tracking-[0.22em] text-amber-400 shadow-lg shadow-black/20 backdrop-blur-md sm:px-6 sm:py-3 sm:text-xs">
               JMK GROUP
               <ArrowRight size={17} className="ml-2" />
             </span>
 
             <h1 className="reveal-delay mt-7 text-[clamp(3.35rem,7.2vw,7rem)] font-black leading-[0.92] tracking-[-0.065em] sm:mt-8">
-              <span className="block text-white">Building</span>
+              <span className="block text-white">
+                Building
+              </span>
 
-              <span className="block text-gold-gradient">Trust.</span>
+              <span className="block text-gold-gradient">
+                Trust.
+              </span>
 
-              <span className="mt-2 block text-white">Creating</span>
+              <span className="mt-2 block text-white">
+                Creating
+              </span>
 
-              <span className="block text-gold-gradient">Future.</span>
+              <span className="block text-gold-gradient">
+                Future.
+              </span>
             </h1>
 
             <p className="mx-auto mt-7 max-w-xl text-base leading-8 text-slate-300 sm:mt-8 sm:text-lg lg:mx-0">
-              One trusted company delivering premium Real Estate, Financial
-              Servicess and Solar Solutions across Madhya Pradesh.
+              One trusted company delivering premium Real Estate,
+              Financial Servicess and Solar Solutions across Madhya
+              Pradesh.
             </p>
 
             <div className="mt-7 flex flex-wrap justify-center gap-3 lg:justify-start">
@@ -105,7 +115,11 @@ export default function Hero() {
                     key={point.label}
                     className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.055] px-4 py-2 text-sm font-semibold text-slate-200 backdrop-blur-md"
                   >
-                    <Icon size={16} className="text-amber-400" />
+                    <Icon
+                      size={16}
+                      className="text-amber-400"
+                    />
+
                     {point.label}
                   </span>
                 );
@@ -132,30 +146,39 @@ export default function Hero() {
 
             <div className="mt-9 flex flex-wrap items-center justify-center gap-x-6 gap-y-3 text-sm font-semibold text-slate-300 lg:justify-start">
               <span className="inline-flex items-center gap-2">
-                <CheckCircle2 size={17} className="text-green-400" />
+                <CheckCircle2
+                  size={17}
+                  className="text-green-400"
+                />
+
                 Customer-first service
               </span>
 
               <span className="inline-flex items-center gap-2">
-                <CheckCircle2 size={17} className="text-green-400" />
+                <CheckCircle2
+                  size={17}
+                  className="text-green-400"
+                />
+
                 Complete business support
               </span>
             </div>
           </div>
 
-          <div className="relative flex min-h-[450px] items-center justify-center sm:min-h-[540px] lg:min-h-[620px]">
-            <div className="absolute inset-x-[10%] top-[16%] h-[58%] rounded-full bg-amber-400/10 blur-[105px]" />
+          <div className="relative flex min-h-[470px] items-center justify-center sm:min-h-[550px] lg:min-h-[620px]">
+            <div className="absolute inset-x-[12%] top-[17%] h-[56%] rounded-full bg-amber-400/10 blur-[105px]" />
 
-            <div className="absolute left-[4%] top-[22%] hidden rounded-2xl border border-white/10 bg-[#0b1729]/80 p-4 shadow-2xl backdrop-blur-xl xl:block">
+            <div className="absolute left-0 top-[8%] z-30 hidden min-w-[210px] rounded-2xl border border-amber-400/35 bg-[#07111f]/95 p-5 shadow-2xl shadow-black/40 backdrop-blur-xl xl:block">
               <p className="text-xs font-black uppercase tracking-[0.18em] text-amber-400">
                 One Group
               </p>
+
               <p className="mt-1 text-sm font-bold text-white">
                 Three Trusted Divisions
               </p>
             </div>
 
-            <div className="absolute bottom-[17%] right-[1%] hidden rounded-2xl border border-white/10 bg-[#0b1729]/80 p-4 shadow-2xl backdrop-blur-xl xl:block">
+            <div className="absolute bottom-[13%] right-[1%] z-30 hidden rounded-2xl border border-white/10 bg-[#07111f]/95 p-4 shadow-2xl shadow-black/40 backdrop-blur-xl xl:block">
               <div className="flex items-center gap-3">
                 <span className="grid h-10 w-10 place-items-center rounded-full bg-green-500/15 text-green-400">
                   <BadgeCheck size={22} />
@@ -165,6 +188,7 @@ export default function Hero() {
                   <strong className="block text-sm text-white">
                     Professional Support
                   </strong>
+
                   <small className="text-slate-400">
                     From enquiry to execution
                   </small>
@@ -172,11 +196,13 @@ export default function Hero() {
               </div>
             </div>
 
-            <LogoMark
-              size={610}
-              animated
-              className="relative z-10 w-full max-w-[610px]"
-            />
+            <div className="relative z-10 flex w-full justify-center overflow-visible">
+              <LogoMark
+                size={560}
+                animated
+                className="w-full max-w-[560px]"
+              />
+            </div>
           </div>
         </div>
 
@@ -210,6 +236,7 @@ export default function Hero() {
                       className={`mt-3 inline-flex items-center gap-2 font-black ${division.linkClass}`}
                     >
                       Explore
+
                       <ArrowRight
                         size={17}
                         className="transition duration-300 group-hover:translate-x-1"
