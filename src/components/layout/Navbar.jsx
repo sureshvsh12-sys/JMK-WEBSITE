@@ -7,20 +7,32 @@ import {
 } from "lucide-react";
 import { Link, NavLink } from "react-router-dom";
 import HeaderLogo from "../brand/HeaderLogo";
-import { JMK_LINKS } from "../../config/contact";
+import {
+  JMK_CONTACT,
+  JMK_LINKS,
+} from "../../config/contact";
 
 const navigationItems = [
   { label: "Home", path: "/" },
   { label: "About Us", path: "/about" },
   { label: "JMK Assets", path: "/assets" },
-  { label: "Financial Servicess", path: "/financial" },
-  { label: "Solar Solutions", path: "/solar" },
+  {
+    label: "Financial Servicess",
+    path: "/financial",
+  },
+  {
+    label: "Solar Solutions",
+    path: "/solar",
+  },
   { label: "Contact", path: "/contact" },
 ];
 
 export default function Navbar() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] =
+    useState(false);
+
+  const [isScrolled, setIsScrolled] =
+    useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -29,17 +41,25 @@ export default function Navbar() {
 
     handleScroll();
 
-    window.addEventListener("scroll", handleScroll, {
-      passive: true,
-    });
+    window.addEventListener(
+      "scroll",
+      handleScroll,
+      {
+        passive: true,
+      },
+    );
 
     return () => {
-      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener(
+        "scroll",
+        handleScroll,
+      );
     };
   }, []);
 
   useEffect(() => {
-    document.body.style.overflow = mobileMenuOpen ? "hidden" : "";
+    document.body.style.overflow =
+      mobileMenuOpen ? "hidden" : "";
 
     return () => {
       document.body.style.overflow = "";
@@ -57,6 +77,9 @@ export default function Navbar() {
           ? "shadow-xl shadow-slate-950/10"
           : "shadow-sm"
       }`}
+      style={{
+        backgroundColor: "#ffffff",
+      }}
     >
       <nav
         className="mx-auto flex h-[104px] max-w-[1500px] items-center justify-between gap-5 px-5 lg:px-8 xl:px-12"
@@ -76,17 +99,27 @@ export default function Navbar() {
             <NavLink
               key={item.path}
               to={item.path}
-              className={({ isActive }) =>
-                `relative inline-flex h-[104px] items-center whitespace-nowrap px-1 text-[15px] font-black transition-colors duration-300 ${
-                  isActive
-                    ? "text-red-600"
-                    : "text-slate-800 hover:text-red-600"
-                }`
-              }
+              style={({ isActive }) => ({
+                color: isActive
+                  ? "#dc2626"
+                  : "#1e293b",
+                fontWeight: 900,
+                opacity: 1,
+                visibility: "visible",
+              })}
+              className="relative inline-flex h-[104px] items-center whitespace-nowrap px-1 text-[15px] transition-colors duration-300 hover:!text-red-600"
             >
               {({ isActive }) => (
                 <>
-                  {item.label}
+                  <span
+                    style={{
+                      color: isActive
+                        ? "#dc2626"
+                        : "#1e293b",
+                    }}
+                  >
+                    {item.label}
+                  </span>
 
                   <span
                     className={`absolute inset-x-0 bottom-[24px] h-[3px] rounded-full bg-amber-400 transition-all duration-300 ${
@@ -107,6 +140,10 @@ export default function Navbar() {
             target="_blank"
             rel="noreferrer"
             className="inline-flex items-center gap-2 rounded-full bg-green-500 px-5 py-3.5 font-black text-white shadow-lg shadow-green-500/20 transition duration-300 hover:-translate-y-0.5 hover:bg-green-600"
+            style={{
+              backgroundColor: "#22c55e",
+              color: "#ffffff",
+            }}
           >
             <MessageCircle size={19} />
             WhatsApp
@@ -115,6 +152,10 @@ export default function Navbar() {
           <a
             href={JMK_LINKS.phone}
             className="inline-flex items-center gap-2 rounded-full bg-amber-400 px-5 py-3.5 font-black text-slate-950 shadow-lg shadow-amber-400/20 transition duration-300 hover:-translate-y-0.5 hover:bg-amber-300"
+            style={{
+              backgroundColor: "#fbbf24",
+              color: "#0f172a",
+            }}
           >
             <Phone size={19} />
             Call Now
@@ -124,7 +165,9 @@ export default function Navbar() {
         <button
           type="button"
           onClick={() =>
-            setMobileMenuOpen((current) => !current)
+            setMobileMenuOpen(
+              (current) => !current,
+            )
           }
           className="grid h-12 w-12 shrink-0 place-items-center rounded-xl border border-slate-200 bg-white text-slate-950 transition hover:border-amber-400 hover:bg-amber-50 xl:hidden"
           aria-label={
@@ -147,6 +190,9 @@ export default function Navbar() {
         <div
           id="mobile-navigation"
           className="fixed inset-x-0 bottom-0 top-[104px] overflow-y-auto border-t border-slate-200 bg-white px-5 pb-8 pt-5 shadow-2xl xl:hidden"
+          style={{
+            backgroundColor: "#ffffff",
+          }}
         >
           <div className="mx-auto grid max-w-3xl gap-3">
             {navigationItems.map((item) => (
@@ -154,13 +200,18 @@ export default function Navbar() {
                 key={`mobile-${item.path}`}
                 to={item.path}
                 onClick={closeMobileMenu}
-                className={({ isActive }) =>
-                  `rounded-2xl px-5 py-4 font-black transition ${
-                    isActive
-                      ? "bg-red-600 text-white"
-                      : "border border-slate-200 text-slate-800 hover:border-amber-400 hover:bg-amber-50 hover:text-red-600"
-                  }`
-                }
+                style={({ isActive }) => ({
+                  backgroundColor: isActive
+                    ? "#dc2626"
+                    : "#ffffff",
+                  color: isActive
+                    ? "#ffffff"
+                    : "#1e293b",
+                  borderColor: isActive
+                    ? "#dc2626"
+                    : "#e2e8f0",
+                })}
+                className="rounded-2xl border px-5 py-4 font-black transition hover:border-amber-400"
               >
                 {item.label}
               </NavLink>
@@ -172,7 +223,11 @@ export default function Navbar() {
                 target="_blank"
                 rel="noreferrer"
                 onClick={closeMobileMenu}
-                className="inline-flex items-center justify-center gap-2 rounded-2xl bg-green-500 px-5 py-4 font-black text-white transition hover:bg-green-600"
+                className="inline-flex items-center justify-center gap-2 rounded-2xl px-5 py-4 font-black text-white"
+                style={{
+                  backgroundColor: "#22c55e",
+                  color: "#ffffff",
+                }}
               >
                 <MessageCircle size={20} />
                 WhatsApp
@@ -181,11 +236,30 @@ export default function Navbar() {
               <a
                 href={JMK_LINKS.phone}
                 onClick={closeMobileMenu}
-                className="inline-flex items-center justify-center gap-2 rounded-2xl bg-amber-400 px-5 py-4 font-black text-slate-950 transition hover:bg-amber-300"
+                className="inline-flex items-center justify-center gap-2 rounded-2xl px-5 py-4 font-black"
+                style={{
+                  backgroundColor: "#fbbf24",
+                  color: "#0f172a",
+                }}
               >
                 <Phone size={20} />
                 Call Now
               </a>
+            </div>
+
+            <div
+              className="mt-4 rounded-2xl border border-slate-200 p-4 text-center"
+              style={{
+                color: "#475569",
+              }}
+            >
+              <p className="text-sm font-bold">
+                {JMK_CONTACT.phoneDisplay}
+              </p>
+
+              <p className="mt-1 text-xs">
+                Finance • Assets • Solar
+              </p>
             </div>
           </div>
         </div>
