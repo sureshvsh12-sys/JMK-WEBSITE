@@ -5,32 +5,46 @@ import {
   Building2,
   Car,
   CheckCircle2,
+  Copy,
   IndianRupee,
   MapPin,
   Maximize2,
   MessageCircle,
+  Navigation,
   Phone,
   Ruler,
+  Share2,
 } from "lucide-react";
+import { useState } from "react";
 import { Link, Navigate, useParams } from "react-router-dom";
 import PropertyGallery from "../components/assets/PropertyGallery";
+import SimilarProperties from "../components/assets/SimilarProperties";
+import { JMK_CONTACT, JMK_LINKS } from "../config/contact";
 import properties from "../data/properties";
-import { JMK_LINKS } from "../config/contact";
 
 function buildWhatsAppLink(property) {
   const message = `Hello JMK Group, I am interested in ${property.title} at ${property.location}. Please share complete details and arrange a site visit.`;
-  return `https://wa.me/919753109732?text=${encodeURIComponent(message)}`;
+  return `https://wa.me/${JMK_CONTACT.phoneNumber}?text=${encodeURIComponent(message)}`;
+}
+
+function getPropertyMapLinks(property) {
+  const location = `${property.location}, Madhya Pradesh`;
+  const query = encodeURIComponent(location);
+
+  return {
+    embed: `https://www.google.com/maps?q=${query}&output=embed`,
+    directions: `https://www.google.com/maps/dir/?api=1&destination=${query}`,
+  };
 }
 
 export default function PropertyDetails() {
   const { propertyId } = useParams();
+  const [shareStatus, setShareStatus] = useState("");
   const property = properties.find(
     (item) => String(item.id) === String(propertyId),
   );
 
-  if (!property) {
-    return <Navigate to="/assets" replace />;
-  }
+  if (!property) return <Navigate to="/assets" replace />;
 
   const highlights = [
     { label: "Area", value: property.area, icon: Maximize2 },
@@ -50,17 +64,51 @@ export default function PropertyDetails() {
   ];
 
   const whatsappLink = buildWhatsAppLink(property);
+  const mapLinks = getPropertyMapLinks(property);
+
+  const handleShare = async () => {
+    const shareData = {
+      title: `${property.title} | JMK Assets`,
+      text: `${property.title} at ${property.location} — ${property.price}`,
+      url: window.location.href,
+    };
+
+    try {
+      if (navigator.share) {
+        await navigator.share(shareData);
+        setShareStatus("Shared");
+      } else {
+        await navigator.clipboard.writeText(window.location.href);
+        setShareStatus("Link copied");
+      }
+    } catch (error) {
+      if (error?.name !== "AbortError") setShareStatus("Unable to share");
+    }
+
+    window.setTimeout(() => setShareStatus(""), 2500);
+  };
 
   return (
     <main className="min-h-screen bg-[#07111f] pb-24 pt-32 text-white">
       <div className="mx-auto max-w-7xl px-5 sm:px-6">
-        <Link
-          to="/assets"
-          className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-5 py-3 font-bold text-slate-300 transition hover:border-amber-400 hover:text-amber-400"
-        >
-          <ArrowLeft size={18} />
-          Back to Properties
-        </Link>
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <Link
+            to="/assets"
+            className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-5 py-3 font-bold text-slate-300 transition hover:border-amber-400 hover:text-amber-400"
+          >
+            <ArrowLeft size={18} />
+            Back to Properties
+          </Link>
+
+          <button
+            type="button"
+            onClick={handleShare}
+            className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-5 py-3 font-bold text-slate-300 transition hover:border-amber-400 hover:text-amber-400"
+          >
+            {shareStatus === "Link copied" ? <Copy size={18} /> : <Share2 size={18} />}
+            {shareStatus || "Share Property"}
+          </button>
+        </div>
 
         <div className="mt-8 grid gap-10 lg:grid-cols-[1.35fr_0.65fr]">
           <section>
@@ -75,7 +123,6 @@ export default function PropertyDetails() {
                   <Building2 size={15} />
                   {property.type}
                 </span>
-
                 <span className="inline-flex items-center gap-2 rounded-full border border-emerald-400/30 bg-emerald-500/10 px-4 py-2 text-xs font-black text-emerald-300">
                   <CheckCircle2 size={15} />
                   Available
@@ -88,7 +135,9 @@ export default function PropertyDetails() {
 
               <p className="mt-4 flex items-start gap-2 text-lg text-slate-400">
                 <MapPin size={21} className="mt-1 shrink-0 text-amber-400" />
-                {property.location}, Madhya Pradesh
+                {property.location}
+                {!property.location.toLowerCase().includes("madhya pradesh") &&
+                  ", Madhya Pradesh"}
               </p>
 
               <p className="mt-7 text-lg leading-8 text-slate-300">
@@ -105,7 +154,9 @@ export default function PropertyDetails() {
                     <p className="mt-3 text-xs font-black uppercase tracking-[0.15em] text-slate-500">
                       {label}
                     </p>
-                    <p className="mt-1 font-black text-white">{value || "On Request"}</p>
+                    <p className="mt-1 font-black text-white">
+                      {value || "On Request"}
+                    </p>
                   </div>
                 ))}
               </div>
@@ -121,11 +172,48 @@ export default function PropertyDetails() {
                   "Documentation assistance",
                 ]).map((item) => (
                   <div key={item} className="flex items-start gap-3 text-slate-300">
-                    <CheckCircle2 size={20} className="mt-0.5 shrink-0 text-emerald-400" />
+                    <CheckCircle2
+                      size={20}
+                      className="mt-0.5 shrink-0 text-emerald-400"
+                    />
                     <span>{item}</span>
                   </div>
                 ))}
               </div>
+            </div>
+
+            <div className="mt-8 overflow-hidden rounded-[32px] border border-white/10 bg-white/[0.045]">
+              <div className="flex flex-col gap-4 p-6 sm:flex-row sm:items-center sm:justify-between sm:p-8">
+                <div>
+                  <p className="text-xs font-black uppercase tracking-[0.2em] text-amber-400">
+                    Location
+                  </p>
+                  <h2 className="mt-2 text-2xl font-black sm:text-3xl">
+                    Explore the Area
+                  </h2>
+                  <p className="mt-2 text-slate-400">{property.location}</p>
+                </div>
+                <a
+                  href={mapLinks.directions}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center justify-center gap-2 rounded-full bg-amber-400 px-6 py-3.5 font-black text-slate-950 transition hover:-translate-y-1 hover:bg-amber-300"
+                >
+                  <Navigation size={19} />
+                  Get Directions
+                </a>
+              </div>
+              <iframe
+                title={`${property.title} location map`}
+                src={mapLinks.embed}
+                className="h-[360px] w-full border-0"
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              />
+              <p className="px-6 py-4 text-xs leading-5 text-slate-500 sm:px-8">
+                Map shows the property area. Exact site location is shared during
+                enquiry or site-visit confirmation.
+              </p>
             </div>
           </section>
 
@@ -145,7 +233,7 @@ export default function PropertyDetails() {
                   state={{
                     service: "Property Enquiry",
                     property: property.title,
-                    message: `I am interested in ${property.title} at ${property.location}. Please contact me.`,
+                    message: `I am interested in ${property.title} at ${property.location}. Please contact me and arrange a site visit.`,
                   }}
                   className="inline-flex w-full items-center justify-center gap-3 rounded-full bg-amber-400 px-6 py-4 font-black text-slate-950 transition hover:-translate-y-1 hover:bg-amber-300"
                 >
@@ -167,16 +255,22 @@ export default function PropertyDetails() {
                   className="inline-flex w-full items-center justify-center gap-3 rounded-full border border-white/15 bg-white/5 px-6 py-4 font-black text-white transition hover:-translate-y-1 hover:border-amber-400 hover:text-amber-400"
                 >
                   <Phone size={20} />
-                  Call Now
+                  Call {JMK_CONTACT.phoneDisplay}
                 </a>
               </div>
 
-              <p className="mt-6 text-center text-sm leading-6 text-slate-400">
-                Site visit, price discussion and documentation guidance available from JMK Assets.
-              </p>
+              <div className="mt-7 rounded-2xl border border-white/10 bg-black/15 p-4">
+                <p className="font-black text-white">Free Site Visit Support</p>
+                <p className="mt-2 text-sm leading-6 text-slate-400">
+                  Get price discussion, location guidance and documentation
+                  assistance directly from JMK Assets.
+                </p>
+              </div>
             </div>
           </aside>
         </div>
+
+        <SimilarProperties currentProperty={property} properties={properties} />
       </div>
     </main>
   );

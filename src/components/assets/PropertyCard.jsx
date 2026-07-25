@@ -11,11 +11,11 @@ import {
   Star,
 } from "lucide-react";
 import { Link } from "react-router-dom";
-import { JMK_LINKS } from "../../config/contact";
+import { JMK_CONTACT } from "../../config/contact";
 
 function buildWhatsAppLink(property) {
   const message = `Hello JMK Group, I am interested in ${property.title} (${property.location}). Please share more details.`;
-  return `${JMK_LINKS.whatsapp}${JMK_LINKS.whatsapp.includes("?") ? "&" : "?"}text=${encodeURIComponent(message)}`;
+  return `https://wa.me/${JMK_CONTACT.phoneNumber}?text=${encodeURIComponent(message)}`;
 }
 
 export default function PropertyCard({ property }) {

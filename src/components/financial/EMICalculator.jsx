@@ -1,4 +1,5 @@
-import { Calculator, IndianRupee, Percent, Timer } from "lucide-react";
+import { ArrowRight, Calculator, IndianRupee, Percent, Timer } from "lucide-react";
+import { Link } from "react-router-dom";
 import { useMemo, useState } from "react";
 
 const formatCurrency = (value) =>
@@ -97,6 +98,13 @@ export default function EMICalculator() {
             <p className="mt-7 text-sm font-semibold leading-6 text-slate-700">
               Actual EMI, rate aur approval applicant profile aur selected financial institution par depend karega.
             </p>
+
+            <Link
+              to="/contact?service=Financial%20Servicess"
+              className="mt-7 inline-flex w-full items-center justify-center gap-2 rounded-full bg-slate-950 px-6 py-4 font-black text-white transition hover:-translate-y-0.5 hover:bg-slate-800"
+            >
+              Get Loan Assistance <ArrowRight size={19} />
+            </Link>
           </div>
         </div>
       </div>

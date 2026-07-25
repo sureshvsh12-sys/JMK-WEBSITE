@@ -1,4 +1,5 @@
 import EMICalculator from "../components/financial/EMICalculator";
+import FinanceCTA from "../components/financial/FinanceCTA";
 import FinanceFeatures from "../components/financial/FinanceFeatures";
 import FinanceHero from "../components/financial/FinanceHero";
 import FinanceSectionTitle from "../components/financial/FinanceSectionTitle";
@@ -32,6 +33,8 @@ export default function Financial() {
       <div className="mx-auto max-w-7xl px-5 sm:px-6">
         <EMICalculator />
       </div>
+
+      <FinanceCTA />
     </main>
   );
 }

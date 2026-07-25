@@ -11,6 +11,7 @@ import SolarCard from "../components/solar/SolarCard";
 import SolarCalculator from "../components/solar/SolarCalculator";
 import SolarProcess from "../components/solar/SolarProcess";
 import SolarFeatures from "../components/solar/SolarFeatures";
+import SolarLeadForm from "../components/solar/SolarLeadForm";
 import solarServices from "../data/solar";
 import { JMK_LINKS } from "../config/contact";
 
@@ -42,6 +43,8 @@ export default function Solar() {
 
       <SolarFeatures />
 
+      <SolarLeadForm />
+
       <div className="mx-auto max-w-7xl px-5 sm:px-6">
         <section className="mt-20 overflow-hidden rounded-[36px] border border-white/10 bg-gradient-to-r from-[#102c3d] to-[#155e4f] p-8 sm:p-12">
           <div className="flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
@@ -63,7 +66,7 @@ export default function Solar() {
 
             <div className="flex shrink-0 flex-col gap-3 sm:flex-row lg:flex-col xl:flex-row">
               <Link
-                to="/contact"
+                to="/contact?service=Solar%20Solutions#enquiry-form"
                 className="group inline-flex items-center justify-center gap-3 rounded-full bg-amber-400 px-7 py-4 font-black text-slate-950 transition hover:-translate-y-1 hover:bg-amber-300"
               >
                 Get Solar Quote
