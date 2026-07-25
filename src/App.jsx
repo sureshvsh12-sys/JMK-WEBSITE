@@ -21,6 +21,7 @@ import Financial from "./pages/Financial";
 import Solar from "./pages/Solar";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
+import PropertyDetails from "./pages/PropertyDetails";
 import { JMK_LINKS } from "./config/contact";
 
 function NotFound() {
@@ -105,6 +106,11 @@ export default function App() {
         <Route
           path="/assets"
           element={<Assets />}
+        />
+
+        <Route
+          path="/assets/:propertyId"
+          element={<PropertyDetails />}
         />
 
         <Route

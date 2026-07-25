@@ -152,8 +152,17 @@ export default function SEOManager() {
         ? pathname.replace(/\/+$/, "")
         : pathname;
 
-    const seo =
-      seoData[normalizedPath] || defaultSeo;
+    const isPropertyDetails = normalizedPath.startsWith("/assets/");
+
+    const seo = isPropertyDetails
+      ? {
+          title: "Property Details | JMK Assets Dewas",
+          description:
+            "View property details, specifications and enquiry options from JMK Assets in Dewas, Madhya Pradesh.",
+          keywords:
+            "JMK Assets property details, property in Dewas, residential property Dewas, commercial property Dewas",
+        }
+      : seoData[normalizedPath] || defaultSeo;
 
     document.title = seo.title;
 

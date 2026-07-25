@@ -67,6 +67,7 @@ export default function PropertyFilter({
         >
           <option value="">All Property Types</option>
           <option value="Residential">Residential</option>
+          <option value="Row House">Row House</option>
           <option value="Villa">Villa</option>
           <option value="Commercial">Commercial</option>
           <option value="Farm House">Farm House</option>
@@ -85,6 +86,8 @@ export default function PropertyFilter({
           >
             <option value="">All Locations</option>
             <option value="Dewas">Dewas</option>
+            <option value="Station Road">Station Road</option>
+            <option value="AB Road">AB Road</option>
             <option value="Indore">Indore</option>
             <option value="Ujjain">Ujjain</option>
           </select>

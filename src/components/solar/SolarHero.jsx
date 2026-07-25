@@ -1,80 +1,77 @@
+import {
+  ArrowRight,
+  BadgeIndianRupee,
+  BatteryCharging,
+  Leaf,
+  ShieldCheck,
+  SunMedium,
+  Zap,
+} from "lucide-react";
 import { Link } from "react-router-dom";
+
+const benefits = [
+  { value: "Up to 90%", label: "Bill Savings", icon: Zap },
+  { value: "25+ Years", label: "Panel Life", icon: ShieldCheck },
+  { value: "Clean Energy", label: "Green Future", icon: Leaf },
+  { value: "Smart ROI", label: "Long-term Value", icon: BadgeIndianRupee },
+];
 
 export default function SolarHero() {
   return (
-    <section className="relative overflow-hidden rounded-[40px] border border-white/10 bg-gradient-to-br from-[#07111f] via-[#102c3d] to-[#155e4f] px-7 py-20 md:px-12">
-      <div className="absolute -left-24 -top-24 h-72 w-72 rounded-full bg-amber-400/15 blur-[110px]" />
-      <div className="absolute -bottom-28 -right-20 h-80 w-80 rounded-full bg-emerald-400/15 blur-[120px]" />
+    <section className="relative overflow-hidden rounded-[34px] border border-white/10 bg-gradient-to-br from-[#07111f] via-[#0c2b36] to-[#145c4d] px-6 py-14 shadow-2xl shadow-black/20 sm:px-10 sm:py-16 lg:px-14 lg:py-20">
+      <div className="pointer-events-none absolute -left-28 -top-28 h-80 w-80 rounded-full bg-amber-400/18 blur-[120px]" />
+      <div className="pointer-events-none absolute -bottom-28 -right-24 h-96 w-96 rounded-full bg-emerald-400/18 blur-[130px]" />
 
-      <div className="relative grid items-center gap-14 lg:grid-cols-2">
+      <div className="relative grid items-center gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16">
         <div>
-          <span className="inline-flex rounded-full border border-amber-400/30 bg-amber-400/10 px-5 py-2 text-xs font-semibold uppercase tracking-[0.35em] text-amber-300">
-            JMK Solar Solutions
+          <span className="inline-flex items-center gap-2 rounded-full border border-amber-400/30 bg-amber-400/10 px-5 py-2 text-xs font-black uppercase tracking-[0.25em] text-amber-300">
+            <SunMedium size={17} /> JMK Solar Solutions
           </span>
 
-          <h1 className="mt-8 text-5xl font-black leading-tight text-white md:text-7xl">
+          <h1 className="mt-7 max-w-3xl text-4xl font-black leading-[1.08] text-white sm:text-5xl lg:text-6xl">
             Power Your Future
-            <span className="block text-amber-400">
+            <span className="block bg-gradient-to-r from-amber-300 to-yellow-500 bg-clip-text text-transparent">
               With Clean Energy
             </span>
           </h1>
 
-          <p className="mt-7 max-w-2xl text-lg leading-8 text-slate-300">
-            Residential, commercial and agricultural solar systems designed
-            for long-term savings, reliable performance and a cleaner future.
+          <p className="mt-6 max-w-2xl text-base leading-8 text-slate-300 sm:text-lg">
+            Residential, commercial aur agricultural requirements ke liye reliable solar systems,
+            professional installation aur long-term savings guidance.
           </p>
 
-          <div className="mt-10 flex flex-wrap gap-4">
+          <div className="mt-10 flex flex-col gap-4 sm:flex-row">
             <Link
-              to="/contact"
-              className="rounded-full bg-amber-400 px-8 py-4 font-bold text-slate-900 transition hover:scale-105 hover:bg-amber-300"
+              to="/contact?service=solar"
+              className="group inline-flex items-center justify-center gap-3 rounded-full bg-amber-400 px-7 py-4 font-black text-slate-950 transition hover:-translate-y-1 hover:bg-amber-300"
             >
               Get Free Solar Quote
+              <ArrowRight size={20} className="transition group-hover:translate-x-1" />
             </Link>
-
             <a
               href="#solar-calculator"
-              className="rounded-full border border-white/20 px-8 py-4 font-semibold text-white transition hover:border-amber-400 hover:text-amber-400"
+              className="inline-flex items-center justify-center gap-3 rounded-full border border-white/20 bg-white/5 px-7 py-4 font-black text-white transition hover:-translate-y-1 hover:border-amber-400 hover:text-amber-400"
             >
-              Calculate Savings
+              <BatteryCharging size={20} /> Calculate Savings
             </a>
           </div>
         </div>
 
-        <div className="relative mx-auto w-full max-w-md">
-          <div className="absolute inset-0 rounded-full bg-amber-400/20 blur-[90px]" />
-
-          <div className="relative rounded-[36px] border border-white/10 bg-white/5 p-8 backdrop-blur-xl">
-            <div className="text-center text-8xl">
-              ☀️
-            </div>
-
-            <div className="mt-8 grid grid-cols-2 gap-4">
-              <div className="rounded-2xl border border-white/10 bg-white/5 p-5 text-center">
-                <h3 className="text-3xl font-black text-amber-400">
-                  90%
-                </h3>
-                <p className="mt-2 text-sm text-slate-300">
-                  Bill Savings
-                </p>
-              </div>
-
-              <div className="rounded-2xl border border-white/10 bg-white/5 p-5 text-center">
-                <h3 className="text-3xl font-black text-amber-400">
-                  25 Yr
-                </h3>
-                <p className="mt-2 text-sm text-slate-300">
-                  Panel Life
-                </p>
-              </div>
-            </div>
-
-            <div className="mt-5 rounded-2xl bg-amber-400 p-5 text-center">
-              <p className="font-bold text-slate-900">
-                Start saving from your first electricity bill
-              </p>
-            </div>
-          </div>
+        <div className="grid grid-cols-2 gap-4 sm:gap-5">
+          {benefits.map(({ value, label, icon: Icon }, index) => (
+            <article
+              key={label}
+              className={`group rounded-[26px] border border-white/10 bg-white/[0.06] p-5 backdrop-blur-xl transition duration-300 hover:-translate-y-2 hover:border-amber-400/45 sm:p-7 ${
+                index % 2 === 1 ? "lg:translate-y-6" : ""
+              }`}
+            >
+              <span className="grid h-13 w-13 place-items-center rounded-2xl bg-amber-400 text-slate-950 transition group-hover:rotate-3 group-hover:scale-105 sm:h-14 sm:w-14">
+                <Icon size={27} />
+              </span>
+              <p className="mt-5 text-xl font-black text-white sm:text-2xl">{value}</p>
+              <p className="mt-2 text-sm font-semibold text-slate-400">{label}</p>
+            </article>
+          ))}
         </div>
       </div>
     </section>

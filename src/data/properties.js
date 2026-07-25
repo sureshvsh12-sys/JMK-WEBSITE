@@ -17,6 +17,12 @@ const properties = [
       "Commercial property at a prime Station Road location suitable for showroom, office, bank, clinic or investment.",
     image:
       "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200&auto=format&fit=crop&q=85",
+    images: [
+      "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1600&auto=format&fit=crop&q=90",
+      "https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=1600&auto=format&fit=crop&q=90",
+      "https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=1600&auto=format&fit=crop&q=90",
+    ],
+    amenities: ["Prime Station Road location", "40 feet frontage", "Suitable for showroom or office", "Parking available", "Documentation assistance"],
   },
   {
     id: 2,
@@ -36,6 +42,12 @@ const properties = [
       "Residential plot suitable for building a comfortable family home in a developing area of Dewas.",
     image:
       "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1200&auto=format&fit=crop&q=85",
+    images: [
+      "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1600&auto=format&fit=crop&q=90",
+      "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=1600&auto=format&fit=crop&q=90",
+      "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=1600&auto=format&fit=crop&q=90",
+    ],
+    amenities: ["Residential neighbourhood", "Good road access", "Suitable for family home", "Developing location", "Site visit support"],
   },
   {
     id: 3,
@@ -55,6 +67,12 @@ const properties = [
       "Well-planned row house option designed for practical modern living and long-term family comfort.",
     image:
       "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&auto=format&fit=crop&q=85",
+    images: [
+      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1600&auto=format&fit=crop&q=90",
+      "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=1600&auto=format&fit=crop&q=90",
+      "https://images.unsplash.com/photo-1600607688969-a5bfcd646154?w=1600&auto=format&fit=crop&q=90",
+    ],
+    amenities: ["Practical family layout", "Dedicated parking", "Modern design", "Good ventilation", "Documentation assistance"],
   },
   {
     id: 4,
