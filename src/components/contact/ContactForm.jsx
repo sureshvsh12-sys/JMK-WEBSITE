@@ -14,7 +14,22 @@ function readEnquiries() {
 
 export default function ContactForm() {
   const [searchParams] = useSearchParams();
-  const prefilledService = useMemo(() => searchParams.get("service") || "Property Enquiry", [searchParams]);
+  const prefilledService = useMemo(() => {
+    const requested = (searchParams.get("service") || "").trim().toLowerCase();
+    const aliases = {
+      finance: "Financial Servicess",
+      "financial servicess": "Financial Servicess",
+      financial: "Financial Servicess",
+      solar: "Solar Solutions",
+      "solar solutions": "Solar Solutions",
+      assets: "Property Enquiry",
+      property: "Property Enquiry",
+      "property enquiry": "Property Enquiry",
+      general: "General Enquiry",
+      "general enquiry": "General Enquiry",
+    };
+    return aliases[requested] || "Property Enquiry";
+  }, [searchParams]);
   const [form, setForm] = useState({ ...emptyForm, service: JMK_SERVICES.includes(prefilledService) ? prefilledService : emptyForm.service });
   const [status, setStatus] = useState("idle");
   const [error, setError] = useState("");

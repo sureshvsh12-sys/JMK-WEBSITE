@@ -1,4 +1,4 @@
-import jmkLogo from "../../assets/brand/jmk-hero-logo.png";
+import footerLogo from "../../assets/brand/jmk-footer-logo.png";
 
 const sizes = {
   sm: {
@@ -27,7 +27,7 @@ export default function FooterLogo({
       aria-label="JMK — Trust Growth Future"
     >
       <img
-        src={jmkLogo}
+        src={footerLogo}
         alt="JMK"
         className={`${current.logo} w-auto max-w-full object-contain`}
       />

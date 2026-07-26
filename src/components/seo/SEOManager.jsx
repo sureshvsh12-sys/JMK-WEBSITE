@@ -4,7 +4,7 @@ import properties from "../../data/properties";
 import { JMK_CONTACT } from "../../config/contact";
 
 const SITE_NAME = "JMK GROUP";
-const DEFAULT_IMAGE = "/src/assets/brand/jmk-original-logo.png";
+const DEFAULT_IMAGE = "/jmk-logo.png";
 
 const defaultSeo = {
   title: "JMK GROUP | Property, Finance & Solar Solutions in Dewas",
