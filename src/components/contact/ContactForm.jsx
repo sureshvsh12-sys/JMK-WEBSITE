@@ -40,7 +40,7 @@ export default function ContactForm() {
     const service = normalizePrefillService(searchParams.get("service") || state.service);
     const loan = String(searchParams.get("loan") || state.loan || "").trim();
     const property = String(searchParams.get("property") || state.property || "").trim();
-    const stateMessage = String(state.message || "").trim();
+    const stateMessage = String(searchParams.get("message") || state.message || "").trim();
 
     let message = stateMessage;
     if (!message && loan) message = `I am interested in ${loan}. Please contact me with eligibility, documents and available options.`;
@@ -49,7 +49,7 @@ export default function ContactForm() {
     return {
       service: JMK_SERVICES.includes(service) ? service : emptyForm.service,
       message,
-      reference: property || loan || "",
+      reference: property ? `PROPERTY: ${property}` : loan ? `LOAN: ${loan}` : "",
     };
   }, [location.state, searchParams]);
 
@@ -109,11 +109,11 @@ export default function ContactForm() {
         city: form.city,
         district: form.city,
         message: `${form.service}: ${form.message.trim()}`,
-        page: window.location.pathname,
+        page: `${window.location.pathname}${window.location.search}`,
         reference: enquiryContext.reference || `WEB-${Date.now()}`,
       });
 
-      setForm({ ...emptyForm, service: enquiryContext.service });
+      setForm({ ...emptyForm, service: enquiryContext.service, message: enquiryContext.message });
       setStatus("success");
     } catch (submitError) {
       setError(submitError?.message || "Enquiry save nahi ho paayi. Please call or WhatsApp the JMK team.");

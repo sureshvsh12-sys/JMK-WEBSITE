@@ -1,4 +1,6 @@
-const SUPABASE_URL = String(import.meta.env.VITE_SUPABASE_URL || "").trim().replace(/\/$/, "");
+const SUPABASE_URL = String(import.meta.env.VITE_SUPABASE_URL || "")
+  .trim()
+  .replace(/\/$/, "");
 const SUPABASE_KEY = String(
   import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY ||
     import.meta.env.VITE_SUPABASE_ANON_KEY ||
@@ -16,19 +18,29 @@ const SERVICE_SEGMENTS = {
 };
 
 const VALID_SEGMENTS = new Set(["finance", "assets", "solar"]);
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
 
 function normalizeMobile(value) {
   const digits = String(value || "").replace(/\D/g, "");
   return digits.length > 10 ? digits.slice(-10) : digits;
 }
 
-function clean(value) {
-  return String(value || "").trim();
+function clean(value, maxLength = 5000) {
+  return String(value || "").trim().slice(0, maxLength);
+}
+
+function unwrapPayload(payload) {
+  if (Array.isArray(payload)) return payload[0] || null;
+  return payload;
 }
 
 export function getSegmentForService(service, fallback = "assets") {
-  const resolved = SERVICE_SEGMENTS[clean(service)] || clean(fallback).toLowerCase();
+  const resolved = SERVICE_SEGMENTS[clean(service, 100)] || clean(fallback, 100).toLowerCase();
   return VALID_SEGMENTS.has(resolved) ? resolved : "assets";
+}
+
+export function isWebsiteEnquiryConfigured() {
+  return Boolean(SUPABASE_URL && SUPABASE_KEY);
 }
 
 export async function submitWebsiteEnquiry({
@@ -42,15 +54,25 @@ export async function submitWebsiteEnquiry({
   page = "",
   reference = "",
 }) {
-  if (!SUPABASE_URL || !SUPABASE_KEY) {
-    throw new Error("Website cloud connection is not configured. Add VITE_SUPABASE_URL and VITE_SUPABASE_PUBLISHABLE_KEY.");
+  if (!isWebsiteEnquiryConfigured()) {
+    throw new Error(
+      "Website cloud connection is not configured. Add VITE_SUPABASE_URL and VITE_SUPABASE_PUBLISHABLE_KEY.",
+    );
   }
 
   const resolvedSegment = getSegmentForService("", segment);
   const normalizedMobile = normalizeMobile(mobile);
+  const cleanedName = clean(name, 120);
+  const cleanedEmail = clean(email, 180);
 
-  if (clean(name).length < 2 || !/^[6-9]\d{9}$/.test(normalizedMobile)) {
-    throw new Error("Please check the name and mobile number before submitting.");
+  if (cleanedName.length < 2) {
+    throw new Error("Please enter your full name.");
+  }
+  if (!/^[6-9]\d{9}$/.test(normalizedMobile)) {
+    throw new Error("Please enter a valid Indian 10-digit mobile number.");
+  }
+  if (cleanedEmail && !EMAIL_PATTERN.test(cleanedEmail)) {
+    throw new Error("Please enter a valid email address.");
   }
 
   const controller = new AbortController();
@@ -64,24 +86,30 @@ export async function submitWebsiteEnquiry({
         apikey: SUPABASE_KEY,
         Authorization: `Bearer ${SUPABASE_KEY}`,
         "Content-Type": "application/json",
+        Accept: "application/json",
       },
       body: JSON.stringify({
         p_segment: resolvedSegment,
-        p_name: clean(name),
+        p_name: cleanedName,
         p_mobile: normalizedMobile,
-        p_email: clean(email) || null,
-        p_city: clean(city) || null,
-        p_district: clean(district) || null,
-        p_message: clean(message) || null,
-        p_page: clean(page) || null,
-        p_reference: clean(reference) || null,
+        p_email: cleanedEmail || null,
+        p_city: clean(city, 120) || null,
+        p_district: clean(district, 120) || null,
+        p_message: clean(message, 3000) || null,
+        p_page: clean(page, 500) || null,
+        p_reference: clean(reference, 250) || null,
       }),
     });
 
-    const payload = await response.json().catch(() => null);
+    const rawPayload = await response.json().catch(() => null);
+    const payload = unwrapPayload(rawPayload);
 
     if (!response.ok) {
-      const serverMessage = payload?.message || payload?.error_description || payload?.hint;
+      const serverMessage =
+        payload?.message ||
+        payload?.error_description ||
+        payload?.details ||
+        payload?.hint;
       throw new Error(serverMessage || "Enquiry CRM me save nahi ho paayi.");
     }
 
@@ -93,6 +121,9 @@ export async function submitWebsiteEnquiry({
   } catch (error) {
     if (error?.name === "AbortError") {
       throw new Error("Connection timed out. Please try again or use WhatsApp.");
+    }
+    if (error instanceof TypeError) {
+      throw new Error("Network connection failed. Please try again or use WhatsApp.");
     }
     throw error;
   } finally {

@@ -27,7 +27,7 @@ export default function Navbar() {
 
   useEffect(() => {
     setMobileMenuOpen(false);
-  }, [location.pathname]);
+  }, [location.pathname, location.search, location.hash]);
 
   useEffect(() => {
     document.body.style.overflow = mobileMenuOpen ? "hidden" : "";
@@ -72,7 +72,7 @@ export default function Navbar() {
               key={item.path}
               to={item.path}
               end={item.path === "/"}
-              className={`relative inline-flex items-center whitespace-nowrap px-1 text-[15px] font-black text-slate-800 transition-all duration-300 hover:text-red-600 ${headerHeight}`}
+              className={`group relative inline-flex items-center whitespace-nowrap px-1 text-[15px] font-black text-slate-800 transition-all duration-300 hover:text-red-600 ${headerHeight}`}
             >
               {({ isActive }) => (
                 <>

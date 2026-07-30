@@ -31,7 +31,9 @@ export default function SolarLeadForm() {
   }, [form.monthlyBill]);
 
   const handleChange = ({ target: { name, value } }) => {
-    const nextValue = name === "mobile" ? value.replace(/\D/g, "").slice(0, 10) : value;
+    let nextValue = value;
+    if (name === "mobile") nextValue = value.replace(/\D/g, "").slice(0, 10);
+    if (name === "monthlyBill") nextValue = value.replace(/\D/g, "").slice(0, 8);
     setForm((current) => ({ ...current, [name]: nextValue }));
     setStatus("idle");
     setError("");
@@ -73,7 +75,7 @@ export default function SolarLeadForm() {
         city: form.city || "Dewas",
         district: "Dewas",
         message: `${form.propertyType} solar enquiry. Monthly bill ₹${form.monthlyBill}. Roof area ${form.roofArea || "not shared"}. Indicative capacity ${recommendedCapacity} kW. ${details}`,
-        page: window.location.pathname,
+        page: `${window.location.pathname}${window.location.search}`,
         reference: `WEB-SOLAR-${Date.now()}`,
       });
       setForm(emptyForm);
