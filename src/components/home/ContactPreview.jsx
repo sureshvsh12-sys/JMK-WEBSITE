@@ -3,6 +3,7 @@ import { CheckCircle2, Mail, MapPin, MessageCircle, Phone, Send } from "lucide-r
 import { Link } from "react-router-dom";
 import { JMK_CONTACT, JMK_LINKS, JMK_SERVICES } from "../../config/contact";
 import SectionTitle from "./SectionTitle";
+import { getSegmentForService, submitWebsiteEnquiry } from "../../services/websiteEnquiries";
 
 const emptyForm = {
   name: "",
@@ -10,15 +11,6 @@ const emptyForm = {
   service: "Property Enquiry",
   message: "",
 };
-
-function readEnquiries() {
-  try {
-    const value = JSON.parse(localStorage.getItem("jmk_website_enquiries") || "[]");
-    return Array.isArray(value) ? value : [];
-  } catch {
-    return [];
-  }
-}
 
 const contacts = [
   { icon: MapPin, title: "Office Address", value: JMK_CONTACT.address, href: JMK_LINKS.googleMaps, external: true },
@@ -31,6 +23,7 @@ export default function ContactPreview() {
   const [form, setForm] = useState(emptyForm);
   const [error, setError] = useState("");
   const [saved, setSaved] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
   const handleChange = ({ target: { name, value } }) => {
     setForm((current) => ({ ...current, [name]: value }));
@@ -38,7 +31,7 @@ export default function ContactPreview() {
     setSaved(false);
   };
 
-  const submit = (event) => {
+  const submit = async (event) => {
     event.preventDefault();
     const mobile = form.mobile.replace(/\D/g, "");
 
@@ -57,34 +50,24 @@ export default function ContactPreview() {
       return;
     }
 
-    const enquiry = {
-      id: `WEB-${Date.now()}`,
-      name: form.name.trim(),
-      mobile,
-      email: "",
-      city: "Dewas",
-      service: form.service,
-      message: form.message.trim(),
-      source: "JMK GROUP Website",
-      status: "New",
-      segment:
-        form.service === "Financial Servicess"
-          ? "Finance"
-          : form.service === "Solar Solutions"
-            ? "Solar"
-            : "Assets",
-      createdAt: new Date().toISOString(),
-    };
-
+    setSubmitting(true);
     try {
-      localStorage.setItem(
-        "jmk_website_enquiries",
-        JSON.stringify([enquiry, ...readEnquiries()]),
-      );
+      await submitWebsiteEnquiry({
+        segment: getSegmentForService(form.service),
+        name: form.name,
+        mobile,
+        city: "Dewas",
+        district: "Dewas",
+        message: `${form.service}: ${form.message.trim()}`,
+        page: window.location.pathname,
+        reference: `WEB-HOME-${Date.now()}`,
+      });
       setForm(emptyForm);
       setSaved(true);
-    } catch {
-      setError("Enquiry save nahi ho paayi. Please call or WhatsApp JMK GROUP.");
+    } catch (submitError) {
+      setError(submitError?.message || "Enquiry save nahi ho paayi. Please call or WhatsApp JMK GROUP.");
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -122,7 +105,7 @@ export default function ContactPreview() {
 
           <div className="rounded-[32px] border border-white/10 bg-white/5 p-6 backdrop-blur-xl sm:p-8">
             <h3 className="text-3xl font-bold text-white">Request a Free Consultation</h3>
-            <p className="mt-3 text-slate-400">Your enquiry is saved in the CRM-ready website enquiry format.</p>
+            <p className="mt-3 text-slate-400">Your enquiry goes directly to the correct JMK CRM Raw Contacts queue.</p>
 
             <form onSubmit={submit} className="mt-8 space-y-5">
               <input name="name" value={form.name} onChange={handleChange} autoComplete="name" placeholder="Your Name" className="w-full rounded-xl border border-white/10 bg-[#101D35] px-5 py-4 text-white outline-none focus:border-amber-400" />
@@ -135,8 +118,8 @@ export default function ContactPreview() {
               {error && <p role="alert" className="rounded-xl border border-red-400/30 bg-red-500/10 px-4 py-3 text-red-300">{error}</p>}
               {saved && <p role="status" className="flex items-center gap-2 rounded-xl border border-green-400/30 bg-green-500/10 px-4 py-3 text-green-300"><CheckCircle2 size={19} /> Enquiry saved successfully.</p>}
 
-              <button type="submit" className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-amber-400 py-4 text-lg font-bold text-slate-900 transition hover:bg-amber-300">
-                <Send size={20} /> Send Enquiry
+              <button type="submit" disabled={submitting} className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-amber-400 py-4 text-lg font-bold text-slate-900 transition hover:bg-amber-300 disabled:cursor-not-allowed disabled:opacity-60">
+                <Send size={20} /> {submitting ? "Saving..." : "Send Enquiry"}
               </button>
             </form>
 

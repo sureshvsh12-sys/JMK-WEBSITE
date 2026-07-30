@@ -229,7 +229,7 @@ export default function PropertyDetails() {
 
               <div className="mt-7 space-y-3">
                 <Link
-                  to="/contact"
+                  to={`/contact?service=${encodeURIComponent("Property Enquiry")}&property=${encodeURIComponent(property.title)}`}
                   state={{
                     service: "Property Enquiry",
                     property: property.title,

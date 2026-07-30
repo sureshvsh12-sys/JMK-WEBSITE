@@ -8,6 +8,7 @@ import {
   SunMedium,
 } from "lucide-react";
 import { JMK_CONTACT } from "../../config/contact";
+import { submitWebsiteEnquiry } from "../../services/websiteEnquiries";
 
 const emptyForm = {
   name: "",
@@ -18,15 +19,6 @@ const emptyForm = {
   roofArea: "",
   message: "",
 };
-
-function readLeads() {
-  try {
-    const value = JSON.parse(localStorage.getItem("jmk_website_enquiries") || "[]");
-    return Array.isArray(value) ? value : [];
-  } catch {
-    return [];
-  }
-}
 
 export default function SolarLeadForm() {
   const [form, setForm] = useState(emptyForm);
@@ -39,7 +31,8 @@ export default function SolarLeadForm() {
   }, [form.monthlyBill]);
 
   const handleChange = ({ target: { name, value } }) => {
-    setForm((current) => ({ ...current, [name]: value }));
+    const nextValue = name === "mobile" ? value.replace(/\D/g, "").slice(0, 10) : value;
+    setForm((current) => ({ ...current, [name]: nextValue }));
     setStatus("idle");
     setError("");
   };
@@ -47,15 +40,19 @@ export default function SolarLeadForm() {
   const validate = () => {
     const mobile = form.mobile.replace(/\D/g, "");
     if (form.name.trim().length < 2) return "Please enter your full name.";
-    if (mobile.length !== 10) return "Please enter a valid 10-digit mobile number.";
+    if (!/^[6-9]\d{9}$/.test(mobile)) return "Please enter a valid Indian 10-digit mobile number.";
+    if (!form.city.trim()) return "Please enter your city.";
     if (!Number(form.monthlyBill) || Number(form.monthlyBill) < 500) {
-      return "Please enter a valid monthly electricity bill.";
+      return "Please enter a valid monthly electricity bill of at least ₹500.";
     }
+    if (Number(form.monthlyBill) > 10000000) return "Please check the monthly electricity bill amount.";
     return "";
   };
 
-  const submit = (event) => {
+  const submit = async (event) => {
     event.preventDefault();
+    if (status === "submitting") return;
+
     const validationError = validate();
 
     if (validationError) {
@@ -65,37 +62,24 @@ export default function SolarLeadForm() {
     }
 
     setStatus("submitting");
+    setError("");
 
     try {
-      const enquiry = {
-        id: `WEB-SOLAR-${Date.now()}`,
-        name: form.name.trim(),
-        mobile: form.mobile.replace(/\D/g, ""),
-        email: "",
-        city: form.city.trim() || "Dewas",
-        service: "Solar Solutions",
-        message:
-          form.message.trim() ||
-          `${form.propertyType} solar enquiry. Monthly bill ₹${form.monthlyBill}. Roof area ${form.roofArea || "not shared"}.`,
-        propertyType: form.propertyType,
-        monthlyBill: Number(form.monthlyBill),
-        roofArea: form.roofArea.trim(),
-        recommendedCapacity,
-        source: "JMK GROUP Website",
-        segment: "Solar",
-        status: "New",
-        createdAt: new Date().toISOString(),
-      };
-
-      localStorage.setItem(
-        "jmk_website_enquiries",
-        JSON.stringify([enquiry, ...readLeads()])
-      );
-
+      const details = form.message.trim() || "Please contact me for a solar quotation.";
+      await submitWebsiteEnquiry({
+        segment: "solar",
+        name: form.name,
+        mobile: form.mobile,
+        city: form.city || "Dewas",
+        district: "Dewas",
+        message: `${form.propertyType} solar enquiry. Monthly bill ₹${form.monthlyBill}. Roof area ${form.roofArea || "not shared"}. Indicative capacity ${recommendedCapacity} kW. ${details}`,
+        page: window.location.pathname,
+        reference: `WEB-SOLAR-${Date.now()}`,
+      });
       setForm(emptyForm);
       setStatus("success");
-    } catch {
-      setError("Lead save nahi ho paayi. Please WhatsApp ya call karein.");
+    } catch (submitError) {
+      setError(submitError?.message || "Solar enquiry CRM me save nahi ho paayi. Please WhatsApp ya call karein.");
       setStatus("error");
     }
   };
@@ -135,9 +119,7 @@ Requirement: ${form.message || "Please contact me for a solar quotation."}`);
               </h2>
 
               <p className="mt-6 leading-8 text-slate-400">
-                Electricity bill aur site details share karein. Lead website
-                enquiry storage mein save hogi aur CRM integration ke liye ready
-                rahegi.
+                Electricity bill aur site details share karein. Enquiry directly Solar Raw Contacts queue mein save hogi; interest confirm hone par hi Lead banegi.
               </p>
 
               <div className="mt-9 space-y-4 text-slate-300">
@@ -172,21 +154,22 @@ Requirement: ${form.message || "Please contact me for a solar quotation."}`);
 
             <form
               onSubmit={submit}
+              noValidate
               className="grid gap-5 rounded-[28px] border border-white/10 bg-[#091528] p-5 sm:grid-cols-2 sm:p-7"
             >
               <label>
                 <span className="mb-2 block text-sm font-bold text-slate-300">Full Name *</span>
-                <input name="name" value={form.name} onChange={handleChange} className={inputClass} placeholder="Your full name" autoComplete="name" />
+                <input name="name" value={form.name} onChange={handleChange} className={inputClass} placeholder="Your full name" autoComplete="name" required />
               </label>
 
               <label>
                 <span className="mb-2 block text-sm font-bold text-slate-300">Mobile Number *</span>
-                <input name="mobile" value={form.mobile} onChange={handleChange} className={inputClass} placeholder="10-digit mobile" inputMode="numeric" maxLength={10} autoComplete="tel" />
+                <input name="mobile" value={form.mobile} onChange={handleChange} className={inputClass} placeholder="10-digit mobile" inputMode="numeric" maxLength={10} autoComplete="tel" required />
               </label>
 
               <label>
                 <span className="mb-2 block text-sm font-bold text-slate-300">City</span>
-                <input name="city" value={form.city} onChange={handleChange} className={inputClass} placeholder="City" autoComplete="address-level2" />
+                <input name="city" value={form.city} onChange={handleChange} className={inputClass} placeholder="City" autoComplete="address-level2" required />
               </label>
 
               <label>
@@ -201,7 +184,7 @@ Requirement: ${form.message || "Please contact me for a solar quotation."}`);
 
               <label>
                 <span className="mb-2 block text-sm font-bold text-slate-300">Monthly Bill *</span>
-                <input name="monthlyBill" value={form.monthlyBill} onChange={handleChange} className={inputClass} placeholder="Example: 5000" inputMode="numeric" type="number" min="0" />
+                <input name="monthlyBill" value={form.monthlyBill} onChange={handleChange} className={inputClass} placeholder="Example: 5000" inputMode="numeric" type="number" min="500" max="10000000" required />
               </label>
 
               <label>

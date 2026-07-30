@@ -27,7 +27,7 @@ export default function FinanceCTA() {
 
           <div className="flex flex-col gap-3 sm:flex-row lg:flex-col">
             <Link
-              to="/contact?service=Financial%20Servicess"
+              to="/contact?service=Financial%20Servicess&loan=Loan%20Consultation"
               className="inline-flex items-center justify-center gap-2 rounded-full bg-slate-950 px-7 py-4 font-black text-white transition hover:-translate-y-1 hover:bg-slate-800"
             >
               Apply for Loan <ArrowRight size={19} />

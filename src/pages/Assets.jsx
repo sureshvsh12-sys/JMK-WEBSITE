@@ -207,7 +207,7 @@ export default function Assets() {
 
             <div className="flex flex-col gap-3 sm:flex-row">
               <Link
-                to="/contact"
+                to="/contact?service=Property%20Enquiry&property=Custom%20Property%20Requirement"
                 className="inline-flex items-center justify-center rounded-full bg-amber-400 px-7 py-4 font-black text-slate-950 transition hover:-translate-y-1 hover:bg-amber-300"
               >
                 Submit Requirement
