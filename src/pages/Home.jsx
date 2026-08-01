@@ -7,6 +7,7 @@ import FeaturedProperties from "../components/home/FeaturedProperties";
 import Testimonials from "../components/home/Testimonials";
 import ContactPreview from "../components/home/ContactPreview";
 import CallToAction from "../components/home/CallToAction";
+import FounderMessage from "../components/about/FounderMessage";
 
 export default function Home() {
   return (
@@ -26,6 +27,8 @@ export default function Home() {
       <Testimonials />
 
       <ContactPreview />
+
+      <FounderMessage />
 
       <CallToAction />
     </main>
