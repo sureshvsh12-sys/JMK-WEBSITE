@@ -15,12 +15,13 @@ import {
   Ruler,
   Share2,
 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, Navigate, useParams } from "react-router-dom";
 import PropertyGallery from "../components/assets/PropertyGallery";
 import SimilarProperties from "../components/assets/SimilarProperties";
+import SiteVisitForm from "../components/assets/SiteVisitForm";
 import { JMK_CONTACT, JMK_LINKS } from "../config/contact";
-import properties from "../data/properties";
+import useCloudProperties from "../hooks/useCloudProperties";
 
 function buildWhatsAppLink(property) {
   const message = `Hello JMK Group, I am interested in ${property.title} at ${property.location}. Please share complete details and arrange a site visit.`;
@@ -28,22 +29,35 @@ function buildWhatsAppLink(property) {
 }
 
 function getPropertyMapLinks(property) {
-  const location = `${property.location}, Madhya Pradesh`;
-  const query = encodeURIComponent(location);
-
-  return {
-    embed: `https://www.google.com/maps?q=${query}&output=embed`,
-    directions: `https://www.google.com/maps/dir/?api=1&destination=${query}`,
-  };
+  const query = property.latitude && property.longitude ? `${property.latitude},${property.longitude}` : property.location;
+  const encoded = encodeURIComponent(query);
+  return { embed: property.mapUrl?.includes("output=embed") ? property.mapUrl : `https://www.google.com/maps?q=${encoded}&output=embed`, directions: property.mapUrl || `https://www.google.com/maps/dir/?api=1&destination=${encoded}` };
 }
 
 export default function PropertyDetails() {
   const { propertyId } = useParams();
   const [shareStatus, setShareStatus] = useState("");
+  const [siteVisitOpen, setSiteVisitOpen] = useState(false);
+  const { properties, loading, error } = useCloudProperties();
   const property = properties.find(
     (item) => String(item.id) === String(propertyId),
   );
 
+  useEffect(() => {
+    if (!property) return undefined;
+    const previousTitle = document.title;
+    const description = `${property.title} in ${property.location}. ${property.price}. View real photos, location and book a site visit with JMK Assets.`;
+    document.title = `${property.title} | JMK Assets`;
+    let meta = document.querySelector('meta[name="description"]');
+    const created = !meta;
+    if (!meta) { meta = document.createElement("meta"); meta.name = "description"; document.head.appendChild(meta); }
+    const previousDescription = meta.content;
+    meta.content = description;
+    return () => { document.title = previousTitle; if (created) meta.remove(); else meta.content = previousDescription; };
+  }, [property]);
+
+  if (loading) return <main className="min-h-screen bg-[#07111f] pt-40 text-center text-white">Property details load ho rahi hain...</main>;
+  if (error) return <main className="min-h-screen bg-[#07111f] pt-40 text-center text-red-300">{error}</main>;
   if (!property) return <Navigate to="/assets" replace />;
 
   const highlights = [
@@ -125,7 +139,7 @@ export default function PropertyDetails() {
                 </span>
                 <span className="inline-flex items-center gap-2 rounded-full border border-emerald-400/30 bg-emerald-500/10 px-4 py-2 text-xs font-black text-emerald-300">
                   <CheckCircle2 size={15} />
-                  Available
+                  {property.status || "Available"}
                 </span>
               </div>
 
@@ -228,17 +242,13 @@ export default function PropertyDetails() {
               </p>
 
               <div className="mt-7 space-y-3">
-                <Link
-                  to={`/contact?service=${encodeURIComponent("Property Enquiry")}&property=${encodeURIComponent(property.title)}`}
-                  state={{
-                    service: "Property Enquiry",
-                    property: property.title,
-                    message: `I am interested in ${property.title} at ${property.location}. Please contact me and arrange a site visit.`,
-                  }}
+                <button
+                  type="button"
+                  onClick={() => setSiteVisitOpen(true)}
                   className="inline-flex w-full items-center justify-center gap-3 rounded-full bg-amber-400 px-6 py-4 font-black text-slate-950 transition hover:-translate-y-1 hover:bg-amber-300"
                 >
-                  Enquire Now
-                </Link>
+                  Book Free Site Visit
+                </button>
 
                 <a
                   href={whatsappLink}
@@ -272,6 +282,7 @@ export default function PropertyDetails() {
 
         <SimilarProperties currentProperty={property} properties={properties} />
       </div>
+      <SiteVisitForm property={property} open={siteVisitOpen} onClose={() => setSiteVisitOpen(false)} />
     </main>
   );
 }

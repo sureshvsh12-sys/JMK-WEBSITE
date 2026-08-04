@@ -52,6 +52,7 @@ export default function PropertyGallery({ images = [], title = "Property" }) {
           alt={`${title} main view ${activeIndex + 1}`}
           className="h-[340px] w-full object-cover sm:h-[460px] lg:h-[560px]"
           decoding="async"
+          fetchPriority="high"
         />
 
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#07111f]/60 via-transparent to-black/10" />

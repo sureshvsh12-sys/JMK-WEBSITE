@@ -87,7 +87,7 @@ export default function PropertyCard({ property }) {
 
           <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-400/30 bg-emerald-500/15 px-3 py-1.5 text-[11px] font-black text-emerald-300 backdrop-blur-md">
             <CheckCircle2 size={14} />
-            Available
+            {property.status}
           </span>
         </div>
       </div>
